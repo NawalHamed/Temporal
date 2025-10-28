@@ -37,7 +37,7 @@ services:
     container_name: temporal
     depends_on:
       - postgresql
-       - elasticsearch
+      - elasticsearch
     environment:
       - DB=postgres12
       - DB_PORT=5440
