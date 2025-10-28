@@ -113,7 +113,7 @@ services:
     image: python:3.12-slim
     command: python /app/worker.py
     volumes:
-      - ./worker:/app
+      - worker-data:/app
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
     networks:
@@ -124,7 +124,7 @@ services:
     image: python:3.12-slim
     command: python /app/starter.py
     volumes:
-      - ./worker:/app
+      - starter-data:/app
     depends_on:
       - temporal-worker
     environment:
@@ -140,3 +140,6 @@ networks:
 volumes:
   pgdata:
   dynamicconfig-data:
+  worker-data:
+  starter-data:
+  
