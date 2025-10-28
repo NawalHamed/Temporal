@@ -70,4 +70,4 @@ networks:
 
 volumes:
   pgdata:
-  #dynamicconfig-data:
+  dynamicconfig-data:
