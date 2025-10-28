@@ -111,7 +111,7 @@ services:
   temporal-worker:
   container_name: temporal-worker
   image: python:3.12-slim
-  command: python /worker/worker.py
+  command: python /app/worker.py
   volumes:
     - ./worker:/app
   environment:
@@ -122,7 +122,7 @@ services:
   temporal-starter:
     container_name: temporal-starter
     image: python:3.12-slim
-    command: python /worker/starter.py
+    command: python /app/starter.py
     volumes:
       - ./worker:/app
     depends_on:
