@@ -33,8 +33,8 @@ services:
     ports:
       - 7233:7233
     volumes:
-      #- dynamicconfig-data:/etc/temporal/config/dynamicconfig
-      - ./dynamicconfig:/etc/temporal/config/dynamicconfig
+      - dynamicconfig-data:/etc/temporal/config/dynamicconfig
+      #- ./dynamicconfig:/etc/temporal/config/dynamicconfig
 
   temporal-admin-tools:
     container_name: temporal-admin-tools
@@ -70,4 +70,4 @@ networks:
 
 volumes:
   pgdata:
-  #dynamicconfig-data:
+  dynamicconfig-data:
