@@ -109,13 +109,13 @@ services:
   #   networks:
   #     - shared-network
   temporal-worker:
-  build:
-    context: ./worker
-    dockerfile: Dockerfile
-  environment:
-    - TEMPORAL_ADDRESS=temporal:7233
-  networks:
-    - shared-network
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+    networks:
+      - shared-network
 
 temporal-starter:
   build:
