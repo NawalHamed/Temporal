@@ -14,7 +14,7 @@ services:
       - xpack.security.enabled=false
     image: elasticsearch:${ELASTICSEARCH_VERSION}
     networks:
-      - temporal-network
+      - shared-network
     expose:
       - 9200
     volumes:
