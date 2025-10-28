@@ -1,25 +1,7 @@
-
+version: "3.8"
 
 services:
 
-  # elasticsearch:
-  #   container_name: temporal-elasticsearch
-  #   environment:
-  #     - cluster.routing.allocation.disk.threshold_enabled=true
-  #     - cluster.routing.allocation.disk.watermark.low=512mb
-  #     - cluster.routing.allocation.disk.watermark.high=256mb
-  #     - cluster.routing.allocation.disk.watermark.flood_stage=128mb
-  #     - discovery.type=single-node
-  #     - ES_JAVA_OPTS=-Xms256m -Xmx256m
-  #     - xpack.security.enabled=false
-  #   image: elasticsearch:${ELASTICSEARCH_VERSION}
-  #   networks:
-  #     - shared-network
-  #   expose:
-  #     - 9200
-  #   volumes:
-  #     - /var/lib/elasticsearch/data
-      
   postgresql:
     container_name: temporal-postgresql
     environment:
@@ -37,7 +19,6 @@ services:
     container_name: temporal
     depends_on:
       - postgresql
-      # - elasticsearch
     environment:
       - DB=postgres12
       - DB_PORT=5440
@@ -45,9 +26,6 @@ services:
       - POSTGRES_PWD=temporal
       - POSTGRES_SEEDS=postgresql
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
-      # - ENABLE_ES=true
-      # - ES_SEEDS=elasticsearch
-      # - ES_VERSION=v7
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CLI_ADDRESS=temporal:7233
     image: temporalio/auto-setup:${TEMPORAL_VERSION}
@@ -57,7 +35,6 @@ services:
       - 7233:7233
     volumes:
       - dynamicconfig-data:/etc/temporal/config/dynamicconfig
-      #- ./dynamicconfig:/etc/temporal/config/dynamicconfig
 
   temporal-admin-tools:
     container_name: temporal-admin-tools
@@ -84,31 +61,9 @@ services:
     image: temporalio/ui:${TEMPORAL_UI_VERSION}
     networks:
       - shared-network
-    # ports:
-    #   - 8080:8080
-    
-  # temporal-worker:
-  #   container_name: temporal-worker
-  #   build:
-  #     context: ./worker
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - TEMPORAL_ADDRESS=temporal:7233
-  #   networks:
-  #     - shared-network
 
-  # temporal-starter:
-  #   container_name: temporal-starter
-  #   build:
-  #     context: ./worker
-  #     dockerfile: Dockerfile.starter
-  #   depends_on:
-  #     - temporal-worker
-  #   environment:
-  #     - TEMPORAL_ADDRESS=temporal:7233
-  #   networks:
-  #     - shared-network
   temporal-worker:
+    container_name: temporal-worker
     build:
       context: ./worker
       dockerfile: Dockerfile
@@ -117,16 +72,17 @@ services:
     networks:
       - shared-network
 
-temporal-starter:
-  build:
-    context: ./worker
-    dockerfile: Dockerfile
-  depends_on:
-    - temporal-worker
-  environment:
-    - TEMPORAL_ADDRESS=temporal:7233
-  networks:
-    - shared-network
+  temporal-starter:
+    container_name: temporal-starter
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    depends_on:
+      - temporal-worker
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+    networks:
+      - shared-network
 
 networks:
   shared-network:
@@ -135,6 +91,3 @@ networks:
 volumes:
   pgdata:
   dynamicconfig-data:
-  worker-data:
-  starter-data:
-  
