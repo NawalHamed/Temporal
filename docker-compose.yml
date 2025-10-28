@@ -109,29 +109,24 @@ services:
   #   networks:
   #     - shared-network
   temporal-worker:
-    container_name: temporal-worker
-    image: python:3.12-slim
-    command: python /app/worker.py
-    volumes:
-      - worker-data:/app
-    environment:
-      - TEMPORAL_ADDRESS=temporal:7233
-    networks:
-      - shared-network
+  build:
+    context: ./worker
+    dockerfile: Dockerfile
+  environment:
+    - TEMPORAL_ADDRESS=temporal:7233
+  networks:
+    - shared-network
 
-  temporal-starter:
-    container_name: temporal-starter
-    image: python:3.12-slim
-    command: python /app/starter.py
-    volumes:
-      - starter-data:/app
-    depends_on:
-      - temporal-worker
-    environment:
-      - TEMPORAL_ADDRESS=temporal:7233
-    networks:
-      - shared-network
-
+temporal-starter:
+  build:
+    context: ./worker
+    dockerfile: Dockerfile
+  depends_on:
+    - temporal-worker
+  environment:
+    - TEMPORAL_ADDRESS=temporal:7233
+  networks:
+    - shared-network
 
 networks:
   shared-network:
