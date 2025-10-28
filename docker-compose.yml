@@ -109,15 +109,15 @@ services:
   #   networks:
   #     - shared-network
   temporal-worker:
-  container_name: temporal-worker
-  image: python:3.12-slim
-  command: python /app/worker.py
-  volumes:
-    - ./worker:/app
-  environment:
-    - TEMPORAL_ADDRESS=temporal:7233
-  networks:
-    - shared-network
+    container_name: temporal-worker
+    image: python:3.12-slim
+    command: python /app/worker.py
+    volumes:
+      - ./worker:/app
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+    networks:
+      - shared-network
 
   temporal-starter:
     container_name: temporal-starter
