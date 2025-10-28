@@ -86,6 +86,29 @@ services:
       - shared-network
     # ports:
     #   - 8080:8080
+    
+  temporal-worker:
+    container_name: temporal-worker
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+    networks:
+      - shared-network
+
+  temporal-starter:
+    container_name: temporal-starter
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.starter
+    depends_on:
+      - temporal-worker
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+    networks:
+      - shared-network
+
 
 networks:
   shared-network:
